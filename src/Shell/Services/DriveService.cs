@@ -30,6 +30,8 @@ public class DriveService(IDriveRepository driveRepository, IMapper mapper) : ID
     public async Task Delete(int id)
     {
         var dto = await GetById(id);
+        if (dto == null) return;
+        
         await driveRepository.Delete(mapper.Map<Drive>(dto));
     }
 }

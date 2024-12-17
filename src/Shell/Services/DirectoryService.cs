@@ -47,6 +47,8 @@ public class DirectoryService(IDirectoryRepository directoryRepository, IMapper 
     public async Task Delete(int id)
     {
         var dto = await GetById(id);
+        if (dto == null) return;
+        
         await directoryRepository.Delete(mapper.Map<Directory>(dto));
     }
 }
