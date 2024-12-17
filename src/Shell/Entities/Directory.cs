@@ -1,11 +1,12 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using AutoMapper;
+using Shell.Prototype;
 using Shell.Services;
 using Shell.State;
 
 namespace Shell.Entities;
 
-public class Directory
+public class Directory : IPrototype<Directory>
 {
     public int Id { get; set; }
     public string Name { get; set; } = null!;
@@ -30,4 +31,17 @@ public class Directory
     public Drive Drive { get; set; } = null!;
     public ICollection<Directory> ChildDirectories { get; set; } = new List<Directory>();
     public ICollection<File> Files { get; set; } = new List<File>();
+
+    public Directory Clone()
+    {
+        var directory = (Directory)MemberwiseClone();
+
+        foreach (var childDirectory in ChildDirectories)
+            directory.ChildDirectories.Add(childDirectory.Clone());
+
+        foreach (var file in Files)
+            directory.Files.Add(file.Clone());
+
+        return directory;
+    }
 }

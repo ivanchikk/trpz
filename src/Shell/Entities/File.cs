@@ -1,6 +1,8 @@
+using Shell.Prototype;
+
 namespace Shell.Entities;
 
-public class File
+public class File : IPrototype<File>
 {
     public int Id { get; set; }
     public string Name { get; set; } = null!;
@@ -12,4 +14,9 @@ public class File
 
     public Directory? Directory { get; set; }
     public Drive Drive { get; set; } = null!;
+
+    public File Clone()
+    {
+        return (File)MemberwiseClone();
+    }
 }
