@@ -48,7 +48,7 @@ public class FileService(IFileRepository fileRepository, IMapper mapper) : IFile
 
     public async Task Delete(int id)
     {
-        var dto = GetById(id);
+        var dto = await GetById(id);
         await fileRepository.Delete(mapper.Map<File>(dto));
     }
 }
