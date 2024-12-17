@@ -57,11 +57,10 @@ public class DirectoryController(IDirectoryService directoryService) : Controlle
     [HttpPut("{id:int}")]
     public async Task<ActionResult> UpdateDirectoryById(int id, [FromBody] DirectoryDto dto)
     {
-        var directory = await directoryService.GetById(id);
-        if (directory == null)
+        if (await directoryService.GetById(id) == null)
             return NotFound();
 
-        await directoryService.Update(directory);
+        await directoryService.Update(dto);
 
         return NoContent();
     }

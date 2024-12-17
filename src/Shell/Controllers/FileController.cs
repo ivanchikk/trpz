@@ -55,11 +55,10 @@ public class FileController(IFileService fileService) : ControllerBase
     [HttpPut("{id:int}")]
     public async Task<ActionResult> UpdateFileById(int id, [FromBody] FileDto dto)
     {
-        var file = await fileService.GetById(id);
-        if (file == null)
+        if (await fileService.GetById(id) == null)
             return NotFound();
 
-        await fileService.Update(file);
+        await fileService.Update(dto);
 
         return NoContent();
     }
