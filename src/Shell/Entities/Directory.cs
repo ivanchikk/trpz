@@ -1,3 +1,8 @@
+using System.ComponentModel.DataAnnotations.Schema;
+using AutoMapper;
+using Shell.Services;
+using Shell.State;
+
 namespace Shell.Entities;
 
 public class Directory
@@ -9,6 +14,17 @@ public class Directory
     public DateTime EditDate { get; set; }
     public int? ParentDirectoryId { get; set; }
     public int DriveId { get; set; }
+
+    public string State { get; set; } = IDirectoryState.NoFiles;
+    [NotMapped] public IDirectoryState DirectoryState { get; set; } = null!;
+
+    public async Task Handle(IDirectoryService directoryService, IMapper mapper)
+    {
+        DirectoryState = State == IDirectoryState.NoFiles
+            ? new NoFilesState(this)
+            : new HasFilesState(this);
+        await DirectoryState.Handle(directoryService, mapper);
+    }
 
     public Directory? ParentDirectory { get; set; }
     public Drive Drive { get; set; } = null!;

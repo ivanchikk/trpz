@@ -5,7 +5,11 @@ using File = Shell.Entities.File;
 
 namespace Shell.Services;
 
-public class FileService(IFileRepository fileRepository, IMapper mapper) : IFileService
+public class FileService(
+    IFileRepository fileRepository,
+    IMapper mapper,
+    IDirectoryRepository directoryRepository,
+    IDirectoryService directoryService) : IFileService
 {
     public async Task<IEnumerable<FileDto>> GetAll()
     {
@@ -29,6 +33,7 @@ public class FileService(IFileRepository fileRepository, IMapper mapper) : IFile
     public async Task Add(FileDto dto)
     {
         await fileRepository.Add(mapper.Map<File>(dto));
+        await HandleDirectoryState(dto);
     }
 
     public async Task Copy(FileDto dto, string path)
@@ -39,18 +44,27 @@ public class FileService(IFileRepository fileRepository, IMapper mapper) : IFile
 
         dto.Path = dto.NewPath;
         await fileRepository.Add(mapper.Map<File>(dto));
+        await HandleDirectoryState(dto);
     }
 
     public async Task Update(FileDto dto)
     {
         await fileRepository.Update(mapper.Map<File>(dto));
+        await HandleDirectoryState(dto);
     }
 
     public async Task Delete(int id)
     {
         var dto = await GetById(id);
         if (dto == null) return;
-        
+
         await fileRepository.Delete(mapper.Map<File>(dto));
+        await HandleDirectoryState(dto);
+    }
+
+    private async Task HandleDirectoryState(FileDto? dto)
+    {
+        if (dto?.DirectoryId != null)
+            (await directoryRepository.GetById(dto.DirectoryId.Value))?.Handle(directoryService, mapper);
     }
 }

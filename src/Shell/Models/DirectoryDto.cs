@@ -10,4 +10,6 @@ public class DirectoryDto
     public DateTime EditDate { get; set; }
     public int? ParentDirectoryId { get; set; }
     public int DriveId { get; set; }
+    
+    public string State { get; set; } = null!;
 }

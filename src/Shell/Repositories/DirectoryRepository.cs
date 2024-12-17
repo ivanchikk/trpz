@@ -7,12 +7,12 @@ public class DirectoryRepository(ShellDbContext context) : IDirectoryRepository
 {
     public async Task<IEnumerable<Directory>> GetAll()
     {
-        return await context.Directories.AsNoTracking().ToListAsync();
+        return await context.Directories.AsNoTracking().Include(d => d.Files).ToListAsync();
     }
 
     public async Task<Directory?> GetById(int id)
     {
-        return await context.Directories.AsNoTracking().FirstOrDefaultAsync(d => d.Id == id);
+        return await context.Directories.AsNoTracking().Include(d => d.Files).FirstOrDefaultAsync(d => d.Id == id);
     }
 
     public async Task Add(Directory directory)

@@ -9,19 +9,21 @@ public class DirectoryService(IDirectoryRepository directoryRepository, IMapper 
 {
     public async Task<IEnumerable<DirectoryDto>> GetAll()
     {
-        return mapper.Map<IEnumerable<DirectoryDto>>(await directoryRepository.GetAll());
+        var directories = await directoryRepository.GetAll();
+        foreach (var directory in directories)
+            await directory.Handle(this, mapper);
+
+        return mapper.Map<IEnumerable<DirectoryDto>>(directories);
     }
 
     public async Task<IEnumerable<DirectoryDto>> GetContent(string path)
     {
-        var directories = await directoryRepository.GetAll();
-
-        return mapper.Map<IEnumerable<DirectoryDto>>(directories.Where(d => d.Path == path));
+        return mapper.Map<IEnumerable<DirectoryDto>>((await GetAll()).Where(d => d.Path == path));
     }
 
     public async Task<DirectoryDto?> GetById(int id)
     {
-        return mapper.Map<DirectoryDto>(await directoryRepository.GetById(id));
+        return mapper.Map<DirectoryDto>((await directoryRepository.GetById(id))?.Handle(this, mapper));
     }
 
     public async Task Add(DirectoryDto dto)
@@ -48,7 +50,7 @@ public class DirectoryService(IDirectoryRepository directoryRepository, IMapper 
     {
         var dto = await GetById(id);
         if (dto == null) return;
-        
+
         await directoryRepository.Delete(mapper.Map<Directory>(dto));
     }
 }
