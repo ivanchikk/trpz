@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Shell.FabricMethod;
 using Shell.Models;
 using Shell.Services;
 
@@ -33,7 +34,8 @@ public class FileController(IFileService fileService) : ControllerBase
     [HttpPost]
     public async Task<ActionResult> CreateFile([FromBody] FileDto dto)
     {
-        await fileService.Add(dto);
+        var factory = new CreateFileOperationFactory();
+        await fileService.ExecuteOperation(factory, dto);
         return Ok();
     }
 
@@ -66,7 +68,8 @@ public class FileController(IFileService fileService) : ControllerBase
     [HttpDelete("{id:int}")]
     public async Task<ActionResult> DeleteFileById(int id)
     {
-        await fileService.Delete(id);
+        var factory = new DeleteFileOperationFactory();
+        await fileService.ExecuteOperation(factory, id);
 
         return NoContent();
     }

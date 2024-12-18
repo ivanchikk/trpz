@@ -1,4 +1,5 @@
 using AutoMapper;
+using Shell.FabricMethod;
 using Shell.Models;
 using Shell.Repositories;
 using File = Shell.Entities.File;
@@ -11,6 +12,12 @@ public class FileService(
     IDirectoryRepository directoryRepository,
     IDirectoryService directoryService) : IFileService
 {
+    public async Task ExecuteOperation<TInput>(FileOperationFactory<TInput> factory, TInput input)
+    {
+        var operation = factory.CreateOperation();
+        await operation.Execute(fileRepository, mapper, input);
+    }
+
     public async Task<IEnumerable<FileDto>> GetAll()
     {
         return mapper.Map<IEnumerable<FileDto>>(await fileRepository.GetAll());
