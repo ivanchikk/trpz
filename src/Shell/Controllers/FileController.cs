@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Shell.FabricMethod;
+using Shell.FactoryMethod;
 using Shell.Models;
 using Shell.Services;
 

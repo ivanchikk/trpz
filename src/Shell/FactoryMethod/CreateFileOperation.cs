@@ -3,7 +3,7 @@ using Shell.Models;
 using Shell.Repositories;
 using File = Shell.Entities.File;
 
-namespace Shell.FabricMethod;
+namespace Shell.FactoryMethod;
 
 public class CreateFileOperation : IFileOperation<FileDto>
 {

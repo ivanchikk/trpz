@@ -1,6 +1,6 @@
 using Shell.Models;
 
-namespace Shell.FabricMethod;
+namespace Shell.FactoryMethod;
 
 public class CreateFileOperationFactory : FileOperationFactory<FileDto>
 {

@@ -1,5 +1,5 @@
 using AutoMapper;
-using Shell.FabricMethod;
+using Shell.FactoryMethod;
 using Shell.Models;
 using Shell.Repositories;
 using File = Shell.Entities.File;

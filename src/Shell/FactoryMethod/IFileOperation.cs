@@ -1,7 +1,7 @@
 using AutoMapper;
 using Shell.Repositories;
 
-namespace Shell.FabricMethod;
+namespace Shell.FactoryMethod;
 
 public interface IFileOperation<TInput>
 {

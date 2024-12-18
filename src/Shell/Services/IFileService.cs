@@ -1,4 +1,4 @@
-using Shell.FabricMethod;
+using Shell.FactoryMethod;
 using Shell.Models;
 
 namespace Shell.Services;

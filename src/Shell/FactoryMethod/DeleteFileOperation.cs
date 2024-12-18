@@ -2,7 +2,7 @@ using AutoMapper;
 using Shell.Repositories;
 using File = Shell.Entities.File;
 
-namespace Shell.FabricMethod;
+namespace Shell.FactoryMethod;
 
 public class DeleteFileOperation : IFileOperation<int>
 {

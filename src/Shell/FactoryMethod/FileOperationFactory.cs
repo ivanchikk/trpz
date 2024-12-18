@@ -1,4 +1,4 @@
-namespace Shell.FabricMethod;
+namespace Shell.FactoryMethod;
 
 public abstract class FileOperationFactory<TInput>
 {
